@@ -1,0 +1,26 @@
+{
+  "author": "Tcha-Tcho <tchatcho66@hotmail.com>",
+  "contributors": [
+    "Gamooga https://github.com/gamooga"
+  ],
+  "name": "gamooga-node",
+  "description": "Gamooga module for node.js",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tcha-tcho/gamooga-node.git"
+  },
+  "homepage": "https://github.com/tcha-tcho/gamooga-node",
+  "engines": {},
+  "dependencies": {
+    "ws": "0.4.*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "methods": "0.0.1"
+  },
+  "scripts": {
+    "test": "mocha -r should -R spec"
+  }
+}
