@@ -19,7 +19,7 @@ ___
 
 ## Installation
 
-    $ npm install gamooga-noe --save
+    $ npm install gamooga-node --save
 
 (`--save` automatically writes to your `package.json` file, tell your friends)
 
