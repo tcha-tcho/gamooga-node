@@ -87,8 +87,7 @@ Your HTML speaks too:
 Using this default *Chat* Gamlet:
 *./example/gamlet.zip*
 
-# gamooga.sendtosession(sess_id, msg_typ, msg)
-
+**gamooga.sendtosession(sess_id, msg_typ, msg)**
 *The best strategy to [broadcast to sessions](http://www.gamooga.com/dev/docs/serverroom.html#gamooga-sendtosession) without keep a lot of connections openned*
 
 ## Docs
