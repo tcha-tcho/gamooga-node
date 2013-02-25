@@ -13,7 +13,7 @@
   "homepage": "https://github.com/tcha-tcho/gamooga-node",
   "engines": {},
   "dependencies": {
-    "ws": "0.4.*"
+    "ws": "0.4.25"
   },
   "devDependencies": {
     "mocha": "*",

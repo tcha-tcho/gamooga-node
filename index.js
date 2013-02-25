@@ -18,11 +18,16 @@ function GamoogaClient(_opts) {
     value = _ref[key];
     this.options[key] = value;
   }
-  for (key in _opts) {
-    if (!__hasProp.call(_opts, key)) continue;
-    value = _opts[key];
-    this.options[key] = value;
-  }
+  if (typeof _opts == "string") {
+    this.options.isDev = true;
+    this.options.SERVER = _opts;
+  }else{
+    for (key in _opts) {
+      if (!__hasProp.call(_opts, key)) continue;
+      value = _opts[key];
+      this.options[key] = value;
+    }
+  };
   opts = this.options;
 
 
@@ -59,6 +64,7 @@ function GamoogaClient(_opts) {
 
 
   function _getServer(data){
+    var server;
     if (opts.isDev) {
       data = opts.SERVER;
     } else {
@@ -72,48 +78,55 @@ function GamoogaClient(_opts) {
   };
 
   function process_msg(a) {
-    this.state = 1;
-    this.buffer = "";
+    var state = 1;
+    var buffer = "";
+    var recv_len;
     for (; a.length > 0;) {
-      if (this.state == 1) {
-        if (a.length <= 8 - this.buffer.length) {
-          this.buffer = this.buffer + a;
+      if (state == 1) {
+        if (a.length <= 8 - buffer.length) {
+          buffer = buffer + a;
           a = ""
         } else {
-          buf_len_now = 8 - this.buffer.length;
-          this.buffer = this.buffer + a.substr(0, buf_len_now);
+          var buf_len_now = 8 - buffer.length;
+          buffer = buffer + a.substr(0, buf_len_now);
           a = a.substr(buf_len_now)
         }
-        if (this.buffer.length == 8) {
-          this.recv_len = this.buffer - 0;
-          this.buffer = "";
-          this.state = 2
+        if (buffer.length == 8) {
+          recv_len = buffer - 0;
+          buffer = "";
+          state = 2
         }
       }
-      if (this.state == 2) {
-        str_len = a.length;
-        if (this.recv_len <= str_len) {
-          this.buffer = this.buffer + a.substr(0, this.recv_len);
-          a = a.substr(this.recv_len);
-          this.recv_len = 0
+      if (state == 2) {
+        var str_len = a.length;
+        if (recv_len <= str_len) {
+          buffer = buffer + a.substr(0, recv_len);
+          a = a.substr(recv_len);
+          recv_len = 0
         } else {
-          this.buffer = this.buffer + a;
-          this.recv_len = this.recv_len - a.length;
+          buffer = buffer + a;
+          recv_len = recv_len - a.length;
           a = ""
         }
-        if (this.recv_len == 0) {
-          var c = JSON.parse(this.buffer),
+        if (recv_len == 0) {
+          var c = JSON.parse(buffer),
           b = false;
           if (c.type == opts.CLIENT_MESSAGE) {
             var d = JSON.parse(c.data);
-          } else if (c.type == opts.CLIENT_DISCONNECT) this.about_to_disconnect = true;
+            _log("received message [type,msg] - " + c.data);
+            if (opts._onmessage[d[0]]) try {
+              opts._onmessage[d[0]](d[1])
+            } catch (f) {
+              b = f
+            }
+          } else if (c.type == opts.CLIENT_DISCONNECT) opts.about_to_disconnect = true;
           else if (c.type == opts.CLIENT_SERVER_BUSY || c.type == opts.CLIENT_SERVER_ERROR || c.type == opts.CLIENT_IN_DATA_EXCEED || c.type == opts.CLIENT_OUT_DATA_EXCEED) try {
             this._reportError(c.type)
           } catch (j) {
             b = j
           }
-          this.state = 1;
-          this.buffer = "";
+          state = 1;
+          buffer = "";
           if (b) throw b;
         }
       }
@@ -122,9 +135,9 @@ function GamoogaClient(_opts) {
   };
 
   function _send(a) {
-    str = JSON.stringify(a);
-    len = new String(str.length.toString(16));
-    len = len.leftPad(8);
+    var str = JSON.stringify(a);
+    var len = new String(str.length.toString(16));
+    var len = len.leftPad(8);
     if(opts.ready)opts.ws.send(len + str)
   };
 
@@ -166,7 +179,7 @@ function GamoogaClient(_opts) {
       opts._onclose()
     })
     opts.ws.on('message', function(data, flags) {
-      opts._onmessage(process_msg(data),flags);
+      process_msg(data);
     });
 
   }
@@ -222,8 +235,8 @@ function GamoogaClient(_opts) {
   this.onconnecting = function(func) {
     opts._onconnecting = func;
   }
-  this.onmessage = function(func) {
-    opts._onmessage = func;
+  this.onmessage = function(type, func) {
+    opts._onmessage[type] = func;
   }
   this.onclose = function(func) {
     opts._onclose = func;
@@ -273,7 +286,7 @@ exports.defaults = {
     ,sessId                      : 0
     ,_onconnect                  : function(){}
     ,_onconnecting               : function(){} 
-    ,_onmessage                  : function(){} 
+    ,_onmessage                  : {}
     ,_onerror                    : function(){}
     ,_onclose                    : function(){}
     ,CLIENT_MESSAGE              : 2
@@ -291,6 +304,7 @@ exports.defaults = {
     ,LIMITS_REACHED              : 204
     ,GAMLET_UNDEPLOYED           : 205
     ,API_ERROR                   : 301
+    ,about_to_disconnect         : false
     ,seelogs                     : false
     ,isDev                       : false
  }
