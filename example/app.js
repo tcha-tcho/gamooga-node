@@ -1,4 +1,4 @@
-//CHANGE THIS
+// //CHANGE THIS
 var Gamlet_id = "<YOUR ID>"
 var Gamlet_uuid = "<YOUR UUID>"
 
@@ -26,10 +26,10 @@ x.forEach(function(item,index){
       gc["x"+i].send("chat","bla bla.... "+gc["x"+i].options.x)
     },2000)
   })
-  gc["x"+i].onmessage(function(msg){
+  gc["x"+i].onmessage("chat",function(msg){
     console.log(msg)
   })
-  gc["x"+i].onclose(function(){
+  gc["x"+i].ondisconnect(function(){
     console.log("close")
     gc["x"+i].reconnect();
   })
@@ -38,3 +38,4 @@ x.forEach(function(item,index){
   })
 
 })
+

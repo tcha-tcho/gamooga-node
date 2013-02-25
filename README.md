@@ -87,6 +87,10 @@ Your HTML speaks too:
 Using this default *Chat* Gamlet:
 *./example/gamlet.zip*
 
+# gamooga.sendtosession(sess_id, msg_typ, msg)
+
+*The best strategy to [broadcast to sessions](http://www.gamooga.com/dev/docs/serverroom.html#gamooga-sendtosession) without keep a lot of connections openned*
+
 ## Docs
 
 # [Most of this API is working](http://www.gamooga.com/dev/docs/clientjavascript.html#gamoogaclient-constructor)
@@ -120,6 +124,7 @@ Ever experienced those deployment nightmares? We have. So we made it super easy.
 
 ## TODO
 
+ - Implement connect using SDK!
  - More Tests!
  - Better, safer syntax.
 

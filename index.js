@@ -176,7 +176,7 @@ function GamoogaClient(_opts) {
       },300)
     });
     opts.ws.on('close',function(){
-      opts._onclose()
+      opts._ondisconnect()
     })
     opts.ws.on('message', function(data, flags) {
       process_msg(data);
@@ -238,8 +238,8 @@ function GamoogaClient(_opts) {
   this.onmessage = function(type, func) {
     opts._onmessage[type] = func;
   }
-  this.onclose = function(func) {
-    opts._onclose = func;
+  this.ondisconnect = function(func) {
+    opts._ondisconnect = func;
   }
   this.onerror = function(func) {
     opts._onerror = func;
@@ -288,7 +288,7 @@ exports.defaults = {
     ,_onconnecting               : function(){} 
     ,_onmessage                  : {}
     ,_onerror                    : function(){}
-    ,_onclose                    : function(){}
+    ,_ondisconnect               : function(){}
     ,CLIENT_MESSAGE              : 2
     ,CLIENT_SERVER_BUSY          : 3
     ,CLIENT_SERVER_ERROR         : 4
