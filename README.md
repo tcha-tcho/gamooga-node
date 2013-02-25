@@ -35,7 +35,7 @@ Or:
   gc = new GamoogaClient();
 
   gc.connectToRoom("<YOUR ID>", "<YOUR UUID>");
-  gc["x"+i].onconnect(function(){
+  gc.onconnect(function(){
     console.log("connected.")
     setInterval(function(){
       gc.send("chat","Hi from your SERVER!")
@@ -85,7 +85,7 @@ Your HTML speaks too:
 ```
 
 Using this default *Chat* Gamlet:
-```./example/gamlet.zip```
+*./example/gamlet.zip*
 
 ## Docs
 
