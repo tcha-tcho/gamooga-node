@@ -6,13 +6,16 @@ Node.js module for [Gamooga](http://gamooga.com) services.
 
 Pricing at *(18/02/2013)*
 
-| Service       | Connections Simultaneos | Cool           |
+| Service       | Simultaneos Connections | Cool           |
 | ------------- |:-----------------------:| --------------:|
 | Pusher        | 5.000                   | $0.0000199     |
 | **Gamooga**   | **UNLIMITED**           | **$0.0000190** |
 | PubNub        | 10.000/day              | $0.0000010     |
 
 When you expect *A LOT* of people on your app better use Gamooga. It's cheaper than all others services available.
+
+___
+
 
 ## Installation
 
@@ -25,19 +28,54 @@ When you expect *A LOT* of people on your app better use Gamooga. It's cheaper t
 
 **Change the keys** and run `node examples/app.js`.
 
-or
+Or:
 
 ```javascript
+
+  gc = new GamoogaClient();
+
+  gc.connectToRoom("<YOUR ID>", "<YOUR UUID>");
+  gc["x"+i].onconnect(function(){
+    console.log("connected.")
+    setInterval(function(){
+      gc.send("chat","Hi from your SERVER!")
+    },2500)
+  })
+  gc.onmessage(function(msg){
+    console.log(msg)
+  })
+
 ```
 
-And a layout, `test.html`:
+Your HTML speaks too:
 
 ```HTML
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="text/javascript" src="http://app.eventsourcehq.com/es.js"></script>
+  <script type="text/javascript" src="http://www.gamooga.com/static/demos/app-chat-lobby/gamooga.js"></script>
   <script type="text/javascript">
+    var gc;
+    function oninit() {
+      gc = new GamoogaClient();
+
+      //CHANGE HERE:
+      gc.connectToRoom("<Your APPID>","<Your APPUUID>");
+
+      gc.onconnect(function() {
+        console.log("Connected.")
+        var rnd = parseInt(Math.random() * 100000);
+        gc.send('mynick',{channel:"test1",nick:"user_"+rnd});
+        setInterval(function(){
+          gc.send('chat','Hi from your HTML');
+        },2500)
+      });
+
+      gc.onmessage('chat',function(data) {
+        console.log(data)
+      });
+
+    }
   </script>
 </head>
 <body>
@@ -46,6 +84,12 @@ And a layout, `test.html`:
 </html>
 ```
 
+Using this default *Chat* Gamlet:
+```./example/gamlet.zip```
+
+## Docs
+
+# [Most of this API is working](http://www.gamooga.com/dev/docs/clientjavascript.html#gamoogaclient-constructor)
 
 ## Features
 
@@ -93,9 +137,6 @@ then run the tests:
     $ npm test
 
 
-## Docs
-
-[Most of this API is working](http://www.gamooga.com/dev/docs/clientjavascript.html#gamoogaclient-constructor)
 
 ## Credits
 
