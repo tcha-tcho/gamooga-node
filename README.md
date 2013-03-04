@@ -76,6 +76,7 @@ Your HTML speaks too:
       });
 
     }
+    GamoogaClient.init("./sock_bridge.swf",oninit);
   </script>
 </head>
 <body>
@@ -87,8 +88,56 @@ Your HTML speaks too:
 Using this default *Chat* Gamlet:
 *./example/gamlet.zip*
 
-**gamooga.sendtosession(sess_id, msg_typ, msg)**
-*The best strategy to [broadcast to sessions](http://www.gamooga.com/dev/docs/serverroom.html#gamooga-sendtosession) without keep a lot of connections openned*
+## sendtosession technique
+
+On every broadcast you made you have to POST your credentials to gamooga server, get your authentication code, to open a websocket and wait until YOU close it.
+
+This is not a good strategy to scale your server. When you get thousands of simultaneous connections you gonna start to face some difficulties.
+
+Happily Gamooga did solve this problem for us. You could use the sendtosession technique:
+
+On your **room.lua** gamlet:
+```lua
+  gamooga.onmessage("send_to_session_MAKEAHASHKEYHERE", function(conn_id, data)
+    gamooga.sendtosession(tonumber(data["sess_id"]),"server_broadcasting", data["data"])
+  end)
+```
+
+On your **session.lua** gamlet:
+```lua
+  gamooga.onroommsg("server_broadcasting", function(data)
+    gamooga.broadcast("server_broadcast",data);
+  end)
+```
+
+At your **server.js**:
+```javascript
+
+  gc = new GamoogaClient();
+  gc.connectToRoom("<YOUR ID>", "<YOUR UUID>");
+  gc.ondisconnect(function() {
+    gc.reconnect();
+  });
+  function broadcast_to(session,data) {
+    gc.send('send_to_session_MAKEAHASHKEYHERE',{"sess_id":session,"data":data})
+  }
+
+```
+Now you can hold one of your connections opened to broadcast for any of your sessions. Using:
+
+```javascript
+  broadcast_to(1234,{my:"data"})
+```
+
+At your client you can now listen to:
+```javascript
+  gc.onmessage('server_broadcast',function(data) {
+    //server is broadcasting...
+    console.log(data)
+  });
+```
+
+___
 
 ## Docs
 

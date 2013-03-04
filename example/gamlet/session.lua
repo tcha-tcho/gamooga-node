@@ -1,3 +1,13 @@
+--[[
+USE THIS TO RECEIVE NOTIFICATIOS FROM SERVER
+]]
+gamooga.onroommsg("server_broadcasting", function(data)
+  gamooga.broadcast("server_broadcast",data);
+end)
+
+
+
+
 conn_id_map = {}
 online_user_list = {}
 

@@ -1,3 +1,13 @@
+--[[
+USE THIS TO INTERCOMM WITH SESSIONS
+]]
+gamooga.onmessage("send_to_session_MAKEAHASHKEYHERE", function(conn_id, data)
+  gamooga.sendtosession(tonumber(data["sess_id"]),"server_broadcasting", data["data"])
+end)
+
+
+
+
 conn_id_map = {}
 online_user_list = {}
 
