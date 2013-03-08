@@ -137,6 +137,13 @@ At your client you can now listen to:
   });
 ```
 
+## Channel emulation
+
+Gamooga uses Integers as channels. But you can emulate the channel behaviour using key-values.
+At **./example/channels.js** you can find a working sample.
+
+At **./example/gamlet/room.lua** you can find the necessary codes to make this work on your own gamlet.
+
 ___
 
 ## Docs

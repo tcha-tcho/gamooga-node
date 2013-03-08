@@ -1,6 +1,5 @@
-//CHANGE THIS
-var Gamlet_id = "<YOUR ID>"
-var Gamlet_uuid = "<YOUR UUID>"
+// PLEASE USE YOUR CREDENTIALS IN THIS FILE
+var credentials = require('../credentials.json');
 
 var GamoogaClient = require('../');
 
@@ -16,7 +15,7 @@ var session_id   = 0;
 describe('ConnectToRoom',function(){
   this.timeout(20000);
   before(function(done){
-    gc_room.connectToRoom(Gamlet_id, Gamlet_uuid);
+    gc_room.connectToRoom(credentials.Gamlet_id, credentials.Gamlet_uuid);
     done();
   })
   it('It should connect to a given Room',function(done){
@@ -56,7 +55,7 @@ describe('ConnectToRoom',function(){
 describe('createConnectToSession',function(){
   this.timeout(20000);
   before(function(done){
-    gc_create.createConnectToSession(Gamlet_id, Gamlet_uuid);
+    gc_create.createConnectToSession(credentials.Gamlet_id, credentials.Gamlet_uuid);
     done();
   })
   it('It should connect to a given Session',function(done){
@@ -81,7 +80,7 @@ describe('createConnectToSession',function(){
 describe('ConnectToSession',function(){
   this.timeout(20000);
   before(function(done){
-    gc_session.connectToSession(session_id, Gamlet_uuid);
+    gc_session.connectToSession(session_id, credentials.Gamlet_uuid);
     done();
   })
   it('It should connect to the same session created before',function(done){

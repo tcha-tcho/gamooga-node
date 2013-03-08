@@ -6,6 +6,21 @@ gamooga.onmessage("send_to_session_MAKEAHASHKEYHERE", function(conn_id, data)
 end)
 
 
+--[[
+SAMPLE FOR EMULATE CHANNELS ON GAMOOGA
+]]
+gamooga.onmessage("add_channel", function(conn_id, data)
+  gamooga.kv_string_put(data["channel"],data["session_id"])
+  code, session_id = gamooga.kv_string_get(data["channel"])
+  gamooga.send(conn_id, "add_channel", {code=code,_id=session_id})
+end)
+
+gamooga.onmessage("get_session", function(conn_id, channel)
+  code, session_id = gamooga.kv_string_get(channel)
+  gamooga.send(conn_id, "get_session", {code=code,_id=session_id})
+end)
+
+
 
 
 conn_id_map = {}

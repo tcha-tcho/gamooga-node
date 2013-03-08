@@ -197,7 +197,7 @@ function GamoogaClient(_opts) {
       else {
         opts.authKey = data.ak;
         opts.isRoomSess = isRoom?1:2;
-        opts.sessId = isRoom?0:(isCreate?data.sess:opts.keys["id"]);
+        opts.sessId = isRoom?0:(isCreate?data.sess:opts.keys["sess_id"]);
         connectRoomSess(_getServer(data), data.gsp, _getWSServer(data), data.wsp)
       }
     })

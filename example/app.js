@@ -1,6 +1,5 @@
-// //CHANGE THIS
-var Gamlet_id = "<YOUR ID>"
-var Gamlet_uuid = "<YOUR UUID>"
+// PLEASE USE YOUR CREDENTIALS IN THIS FILE
+var credentials = require('../credentials.json');
 
 var GamoogaClient = require('../');
 gc = {};
@@ -15,7 +14,7 @@ x.forEach(function(item,index){
   gc["x"+i] = new GamoogaClient({"x":i});
   console.log("GamoogaCLient: " + gc["x"+i].options.x)
 
-  gc["x"+i].connectToRoom(Gamlet_id, Gamlet_uuid);
+  gc["x"+i].connectToRoom(credentials.Gamlet_id, credentials.Gamlet_uuid);
   gc["x"+i].onconnecting(function(){
     console.log("connecting")
   })
