@@ -19,7 +19,22 @@ function connect_session(sess){
     console.log("session connected: " + gc_sess.getSessId())
     if (!has_sess) gc_room.send("add_channel",{"channel":channel,"session_id":gc_sess.getSessId()});
   });
+
+
   gc_sess.onerror(function(e) {
+    //   3 CLIENT_SERVER_BUSY
+    //   4 CLIENT_SERVER_ERROR
+    //   6 CLIENT_IN_DATA_EXCEED
+    //   7 CLIENT_OUT_DATA_EXCEED
+    // 101 IO_ERROR
+    // 102 SECURITY_ERROR
+    // 103 WEBSOCKET_ERROR
+    // 201 WRONG_APP_ID
+    // 202 WRONG_APP_UUID 
+    // 203 APP_ID_AND_UUID_NOT_PROVIDED
+    // 204 LIMITS_REACHED
+    // 205 GAMLET_UNDEPLOYED
+    // 301 API_ERROR 
     if (e == 201 || e == 202 || e == 203) {
       connect_session({code:-1,_id:""}); //change session
     };
