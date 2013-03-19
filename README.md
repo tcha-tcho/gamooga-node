@@ -41,7 +41,7 @@ Or:
       gc.send("chat","Hi from your SERVER!")
     },2500)
   })
-  gc.onmessage(function(msg){
+  gc.onmessage("chat",function(msg){
     console.log(msg)
   })
 

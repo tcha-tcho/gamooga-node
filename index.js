@@ -55,7 +55,7 @@ function GamoogaClient(_opts) {
       function done(){callback(response_ready) }
       response.on('end', done);
     }).on('error', function(e) {
-      logs("Error on accquiring key: " + e)
+      _log("Error on accquiring key: " + e)
       opts._onerror(e);
     });
     request.write(data);
@@ -112,7 +112,8 @@ function GamoogaClient(_opts) {
           var c = JSON.parse(buffer),
           b = false;
           if (c.type == opts.CLIENT_MESSAGE) {
-            var d = JSON.parse(c.data);
+            //Non UTF problem
+            var d = JSON.parse(decodeURI(c.data));
             _log("received message [type,msg] - " + c.data);
             if (opts._onmessage[d[0]]) try {
               opts._onmessage[d[0]](d[1])
@@ -244,8 +245,19 @@ function GamoogaClient(_opts) {
   this.onerror = function(func) {
     opts._onerror = func;
   }
+
   this.send = function(a,c,callback) {
-    var b = JSON.stringify([a, c]);
+    //Non UTF problem
+    var b = encodeURI(JSON.stringify([a, c]));
+        b = b.replace(/\%20/ig," ")
+             .replace(/\%22/ig,'"')
+             .replace(/\%7B/ig,'{')
+             .replace(/\%7D/ig,'}')
+             .replace(/\%3C/ig,"<")
+             .replace(/\%3E/ig,">")
+             .replace(/\%5B/ig,"[")
+             .replace(/\%5D/ig,"]")
+
     _log("sending message [type, msg] - " + b);
     var d = {};
     d.type = opts.isRoomSess == 1 ? 2 : 502;

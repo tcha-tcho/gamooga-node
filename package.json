@@ -5,7 +5,7 @@
   ],
   "name": "gamooga-node",
   "description": "Gamooga module for node.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/tcha-tcho/gamooga-node.git"

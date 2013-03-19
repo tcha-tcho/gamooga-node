@@ -15,6 +15,7 @@ var session_id   = 0;
 describe('ConnectToRoom',function(){
   this.timeout(20000);
   before(function(done){
+    // gc_room.enableLogMsg();
     gc_room.connectToRoom(credentials.Gamlet_id, credentials.Gamlet_uuid);
     done();
   })
@@ -28,16 +29,17 @@ describe('ConnectToRoom',function(){
   it('It should receive the chat list',function(done){
     gc_room.onmessage("userlist",function(msg){
       msg.ol.length.should.equal(0)
-      gc_room.send("chat",["the message ",{has:"to be formatted"},1234])
+      gc_room.send("chat",["the message ",{has:"to be formatted"},1234,"need accept signs Ááéôã!"])
       done();
     })
   })
   it('It should receive chat messages',function(done){
     gc_room.onmessage("chat",function(msg){
-      msg.c.length.should.equal(3)
+      msg.c.length.should.equal(4)
       msg.c[0].should.equal("the message ")
       msg.c[1].has.should.equal("to be formatted")
       msg.c[2].should.equal(1234)
+      msg.c[3].should.equal("need accept signs Ááéôã!")
       gc_room.disconnect()
       done();
     })
