@@ -2,6 +2,9 @@
 
 Node.js module for [Gamooga](http://gamooga.com) services.
 
+### Gamooga service is no longer working. This package will not receive any update.
+#### I recomend [realtime.co](http://www.realtime.co) instead.
+
 ## Why??
 
 Pricing at *(18/02/2013)*

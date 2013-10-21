@@ -159,7 +159,6 @@ function GamoogaClient(_opts) {
       };
       return handshake;
     }
-
     opts.ws = new WebSocket(ws_url, {origin:"http://gamooga.com",protocol: "gmg-text"} );
 
     opts.ws.on('error', function(e) {
